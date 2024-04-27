@@ -8,7 +8,11 @@ public class UnsafeList {
         List<String> list = new ArrayList<String>();
         for (int i = 0; i < 10000; i++) {
             //两个线程同时覆盖一个位置
-            new Thread(()->list.add(Thread.currentThread().getName())).start();
+            new Thread(()-> {
+                synchronized(list){
+                    list.add(Thread.currentThread().getName());
+                }
+            }).start();
         }
         try {
             Thread.sleep(1000);
